@@ -24,7 +24,7 @@ RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextension enable python-markdown/main
 
 # Notebooks w/ extensions that auto-run code must be "trusted" to work the first time
-jupyter trust Milestone_simulations.ipynb
+RUN jupyter trust Milestone_simulations.ipynb
 
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
