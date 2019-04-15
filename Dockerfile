@@ -8,17 +8,19 @@ libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev \
 libgdbm-compat-dev liblzma-dev libreadline-dev \
 libncursesw5-dev libffi-dev uuid-dev wget ffmpeg apt-transport-https texlive-latex-base \
 texlive-full texlive-fonts-extra sox git libcairo2-dev libjpeg-dev libgif-dev && rm -rf /var/lib/apt/lists/*
-RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-/bin/bash Miniconda3-latest-Linux-x86_64.sh -f -b -p /opt/conda && \
-rm Miniconda3-latest-Linux-x86_64.sh
-ENV PATH /opt/conda/bin:$PATH
+
+FROM continuumio/miniconda3
+ADD environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml
+# Pull the environment name out of the environment.yml
+RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
+ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
 
 RUN wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
 RUN tar -xf Python-3.7.0.tgz
 WORKDIR Python-3.7.0
 RUN ./configure > /dev/null && make -s && make -s install
 RUN python3 -m pip install --upgrade pip
-RUN conda env update -n root --file environment.yml
 RUN jupyter contrib nbextension install --user
 RUN jupyter nbextension enable --py widgetsnbextension
 RUN jupyter nbextension enable python-markdown/main
