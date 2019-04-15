@@ -1,13 +1,6 @@
 FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
 
-FROM continuumio/miniconda3
-ADD environment.yml /tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml
-# Pull the environment name out of the environment.yml
-RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
-ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
-
 RUN apt-get update -qqy
 RUN apt-get install -qqy --no-install-recommends apt-utils
 WORKDIR /root
@@ -16,6 +9,14 @@ libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev \
 libgdbm-compat-dev liblzma-dev libreadline-dev \
 libncursesw5-dev libffi-dev uuid-dev wget ffmpeg apt-transport-https texlive-latex-base \
 texlive-full texlive-fonts-extra sox git libcairo2-dev libjpeg-dev libgif-dev && rm -rf /var/lib/apt/lists/*
+
+FROM continuumio/miniconda3
+ADD environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml
+# Pull the environment name out of the environment.yml
+RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
+ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
+
 RUN apt-get install --no-install-recommends pkg-config
 
 RUN python3 -m pip install --upgrade pip
