@@ -10,7 +10,7 @@ libgdbm-compat-dev liblzma-dev libreadline-dev \
 libncursesw5-dev libffi-dev uuid-dev wget ffmpeg apt-transport-https texlive-latex-base \
 texlive-full texlive-fonts-extra sox git libcairo2-dev libjpeg-dev libgif-dev && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install --no-install-recommends pkg-config libcairo2-dev python3-dev
+RUN apt-get install --no-install-recommends pkg-config libcairo2-dev
 
 RUN python3 -m pip install --upgrade pip
 
