@@ -17,10 +17,6 @@ RUN conda env create -f /tmp/environment.yml
 RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
 ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
 
-RUN wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
-RUN tar -xf Python-3.7.0.tgz
-WORKDIR Python-3.7.0
-RUN ./configure > /dev/null && make -s && make -s install
 RUN python3 -m pip install --upgrade pip
 RUN jupyter contrib nbextension install --user
 RUN jupyter nbextension enable --py widgetsnbextension
