@@ -8,6 +8,7 @@ libbz2-dev zlib1g-dev libssl-dev openssl libgdbm-dev \
 libgdbm-compat-dev liblzma-dev libreadline-dev \
 libncursesw5-dev libffi-dev uuid-dev wget ffmpeg apt-transport-https texlive-latex-base \
 texlive-full texlive-fonts-extra sox git libcairo2-dev libjpeg-dev libgif-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get install --no-install-recommends
 
 FROM continuumio/miniconda3
 ADD environment.yml /tmp/environment.yml
