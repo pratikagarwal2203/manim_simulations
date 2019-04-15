@@ -18,12 +18,6 @@ RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.
 ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
 
 RUN python3 -m pip install --upgrade pip
-RUN jupyter contrib nbextension install --user
-RUN jupyter nbextension enable --py widgetsnbextension
-RUN jupyter nbextension enable python-markdown/main
-
-# Notebooks w/ extensions that auto-run code must be "trusted" to work the first time
-RUN jupyter trust Milestone_simulations.ipynb
 
 COPY requirements.txt requirements.txt
 RUN python3 -m pip install -r requirements.txt
