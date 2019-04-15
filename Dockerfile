@@ -17,7 +17,7 @@ RUN conda env create -f /tmp/environment.yml
 RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
 ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
 
-RUN apt-get install --no-install-recommends pkg-config
+RUN apt-get install --no-install-recommends pkg-config libcairo2-dev python3-dev
 
 RUN python3 -m pip install --upgrade pip
 
