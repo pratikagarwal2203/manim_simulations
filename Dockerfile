@@ -10,13 +10,6 @@ libgdbm-compat-dev liblzma-dev libreadline-dev \
 libncursesw5-dev libffi-dev uuid-dev wget ffmpeg apt-transport-https texlive-latex-base \
 texlive-full texlive-fonts-extra sox git libcairo2-dev libjpeg-dev libgif-dev && rm -rf /var/lib/apt/lists/*
 
-FROM continuumio/miniconda3
-ADD environment.yml /tmp/environment.yml
-RUN conda env create -f /tmp/environment.yml
-# Pull the environment name out of the environment.yml
-RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
-ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
-
 RUN apt-get install --no-install-recommends pkg-config libcairo2-dev python3-dev
 
 RUN python3 -m pip install --upgrade pip
@@ -26,6 +19,14 @@ RUN python3 -m pip install -r requirements.txt
 RUN rm requirements.txt
 WORKDIR /root
 RUN rm -rf Python-3.7.0*
+
+FROM continuumio/miniconda3
+ADD environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml
+# Pull the environment name out of the environment.yml
+RUN echo "source activate $(head -1 /tmp/environment.yml | cut -d' ' -f2)" > ~/.bashrc
+ENV PATH /opt/conda/envs/$(head -1 /tmp/environment.yml | cut -d' ' -f2)/bin:$PATH
+
 ENV TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 ENV DEBIAN_FRONTEND teletype
