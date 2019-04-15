@@ -12,6 +12,10 @@ texlive-full texlive-fonts-extra sox git libcairo2-dev libjpeg-dev libgif-dev &&
 
 RUN apt-get install --no-install-recommends pkg-config libcairo2-dev
 
+RUN wget -q https://www.python.org/ftp/python/3.7.0/Python-3.7.0.tgz
+RUN tar -xf Python-3.7.0.tgz
+WORKDIR Python-3.7.0
+RUN ./configure > /dev/null && make -s && make -s install
 RUN python3 -m pip install --upgrade pip
 
 COPY requirements.txt requirements.txt
